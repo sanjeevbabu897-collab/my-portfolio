@@ -1,0 +1,1901 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sanjeev — Web Developer</title>
+    <meta name="description" content="Portfolio of sanjeev, a web developer building websites and web applications with HTML, CSS, JavaScript, Node.js and Supabase.">
+    <meta name="theme-color" content="#C84B31">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%23161616'/%3E%3Ctext x='32' y='41' font-family='sans-serif' font-size='26' font-weight='700' text-anchor='middle' fill='%23FAF5EE'%3Esb%3C/text%3E%3C/svg%3E">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Syne, Instrument Serif, Plus Jakarta Sans, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        burnt: '#C84B31',
+                        rust: '#A83820',
+                        ink: '#161616',
+                        ivory: '#FAF5EE',
+                    },
+                    fontFamily: {
+                        display: ['Syne', 'sans-serif'],
+                        serif: ['Instrument Serif', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-burnt-orange: #C84B31;
+            --bg-deep-rust: #A83820;
+            --text-soft-black: #161616;
+            --accent-ivory: #FAF5EE;
+            --border-subtle: rgba(22, 22, 22, 0.18);
+            --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Hide the native cursor only where the custom cursor is shown (mouse / trackpad) */
+        @media (hover: hover) and (pointer: fine) {
+            * { cursor: none !important; }
+        }
+
+        ::selection {
+            background-color: var(--text-soft-black);
+            color: var(--accent-ivory);
+        }
+
+        body {
+            background-color: var(--bg-burnt-orange);
+            color: var(--text-soft-black);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #A83820;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #161616;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FAF5EE;
+        }
+
+        /* Keyboard focus ring */
+        :focus-visible {
+            outline: 2px solid var(--accent-ivory);
+            outline-offset: 3px;
+        }
+
+        /* Architectural Hairline Borders */
+        .hairline-t { border-top: 1px solid var(--border-subtle); }
+        .hairline-b { border-bottom: 1px solid var(--border-subtle); }
+        .hairline-l { border-left: 1px solid var(--border-subtle); }
+        .hairline-r { border-right: 1px solid var(--border-subtle); }
+        .hairline-box { border: 1px solid var(--border-subtle); }
+
+        /* Fluid Typography */
+        .hero-title {
+            font-size: clamp(2.85rem, 6.8vw + 0.5rem, 7.25rem);
+            line-height: 0.94;
+            letter-spacing: -0.03em;
+        }
+        .section-title {
+            font-size: clamp(2.25rem, 4.8vw, 4.5rem);
+            line-height: 0.96;
+            letter-spacing: -0.03em;
+        }
+
+        /* Serif Spotlight Accents */
+        .serif-spotlight {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-weight: 400;
+            color: var(--accent-ivory);
+            letter-spacing: 0em;
+            padding-right: 0.08em;
+            display: inline-block;
+        }
+
+        /* Text Mask Reveal Animations */
+        .reveal-mask {
+            overflow: hidden;
+            display: block;
+        }
+        .reveal-line {
+            display: block;
+            transform: translateY(112%);
+            opacity: 0;
+            transition: transform 0.95s var(--ease-out-expo), opacity 0.7s var(--ease-out-expo);
+        }
+        .reveal-line.is-visible {
+            transform: translateY(0%);
+            opacity: 1;
+        }
+
+        .fade-up {
+            transform: translateY(32px);
+            opacity: 0;
+            transition: transform 0.85s var(--ease-out-expo), opacity 0.85s var(--ease-out-expo);
+        }
+        .fade-up.is-visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Custom Dual-State Cursor */
+        #custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 12px;
+            height: 12px;
+            background-color: var(--accent-ivory);
+            border-radius: 9999px;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.35s var(--ease-out-expo),
+                        height 0.35s var(--ease-out-expo),
+                        background-color 0.3s ease,
+                        border 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(22, 22, 22, 0.18);
+        }
+        #custom-cursor.cursor-expanded {
+            width: 84px;
+            height: 84px;
+            background-color: var(--accent-ivory);
+            color: var(--text-soft-black);
+        }
+        #custom-cursor-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            opacity: 0;
+            transform: scale(0.7);
+            transition: opacity 0.25s ease, transform 0.3s var(--ease-out-expo);
+        }
+        #custom-cursor.cursor-expanded #custom-cursor-label {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Floating Project Preview Media Follower */
+        #project-preview-follower {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 340px;
+            height: 220px;
+            pointer-events: none;
+            z-index: 60;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.84) rotate(-2deg);
+            transition: opacity 0.35s var(--ease-out-expo), transform 0.45s var(--ease-out-expo);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1.5px solid var(--text-soft-black);
+            box-shadow: 0 25px 50px -12px rgba(22, 22, 22, 0.55);
+            background: var(--text-soft-black);
+        }
+        #project-preview-follower.is-active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        }
+
+        /* Project Row Hover State */
+        .project-row {
+            position: relative;
+            transition: background-color 0.4s var(--ease-out-expo), padding-left 0.4s var(--ease-out-expo), padding-right 0.4s var(--ease-out-expo);
+        }
+        .project-row:hover,
+        .project-row:focus-visible {
+            background-color: var(--accent-ivory);
+        }
+        .project-row:hover .project-serif-accent,
+        .project-row:focus-visible .project-serif-accent {
+            color: var(--bg-burnt-orange);
+        }
+        .project-row:hover .project-arrow,
+        .project-row:focus-visible .project-arrow {
+            transform: translate(5px, -5px);
+            background-color: var(--text-soft-black);
+            color: var(--accent-ivory);
+        }
+
+        /* Bento Card Styling */
+        .bento-card {
+            background-color: var(--bg-deep-rust);
+            border: 1px solid rgba(22, 22, 22, 0.32);
+            border-radius: 24px;
+            transition: transform 0.45s var(--ease-out-expo), border-color 0.4s ease, box-shadow 0.45s var(--ease-out-expo);
+        }
+        .bento-card:hover {
+            border-color: var(--accent-ivory);
+            box-shadow: 0 20px 40px -15px rgba(22, 22, 22, 0.35);
+        }
+
+        /* Process Card Illumination */
+        .process-card {
+            background-color: rgba(168, 56, 32, 0.55);
+            border: 1px solid rgba(22, 22, 22, 0.22);
+            transition: all 0.5s var(--ease-out-expo);
+        }
+        .process-card.active-process {
+            background-color: var(--bg-deep-rust);
+            border-color: var(--accent-ivory);
+            box-shadow: 0 18px 38px -12px rgba(22, 22, 22, 0.35);
+        }
+
+        /* Hide custom cursor on touch devices */
+        @media (hover: none) and (pointer: coarse) {
+            #custom-cursor, #project-preview-follower {
+                display: none !important;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal-line, .fade-up { transition: none; }
+        }
+    </style>
+</head>
+<body class="selection:bg-ink selection:text-ivory">
+
+    <!-- 3% Tactile SVG Noise Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-50 opacity-[0.035] mix-blend-overlay" aria-hidden="true">
+        <svg class="w-full h-full">
+            <filter id="tactile-noise">
+                <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="4" stitchTiles="stitch"/>
+            </filter>
+            <rect width="100%" height="100%" filter="url(#tactile-noise)"/>
+        </svg>
+    </div>
+
+    <!-- Custom Dual-State Cursor (Desktop) -->
+    <div id="custom-cursor" aria-hidden="true">
+        <span id="custom-cursor-label">VIEW</span>
+    </div>
+
+    <!-- Floating Project Media Preview (Follows Cursor on Desktop) -->
+    <div id="project-preview-follower" class="hidden lg:block" aria-hidden="true">
+        <div id="preview-content-slot" class="w-full h-full relative"></div>
+    </div>
+
+    <!-- Toast Notification for Clipboard -->
+    <div id="toast-notification" class="fixed bottom-6 right-6 z-[100] pointer-events-none opacity-0 translate-y-4 transition-all duration-300" role="status" aria-live="polite">
+        <div class="bg-ivory text-ink border border-ink px-5 py-3.5 rounded-full shadow-2xl flex items-center gap-3 font-mono text-xs uppercase tracking-wider">
+            <span class="w-2.5 h-2.5 rounded-full bg-burnt animate-ping"></span>
+            <span id="toast-message">Phone number copied</span>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         [00] FLOATING MINIMAL HEADER
+    =========================================== -->
+    <header class="fixed top-0 left-0 right-0 z-40 px-4 sm:px-8 lg:px-14 py-4">
+        <div class="max-w-[1600px] mx-auto flex items-center justify-between">
+
+            <!-- Left: Brand Monogram + Live Clock -->
+            <div class="flex items-center gap-4">
+                <a href="#" class="group flex items-center gap-2.5 focus:outline-none" data-cursor="HOME">
+                    <div class="w-9 h-9 rounded-full bg-ink text-ivory flex items-center justify-center font-display font-bold text-sm tracking-tighter group-hover:bg-ivory group-hover:text-ink transition-colors duration-300">
+                        sb
+                    </div>
+                    <span class="font-display font-bold text-base tracking-tight hidden sm:inline-block">sanjeev babu</span>
+                </a>
+                <span class="text-ink/40 hidden md:inline">//</span>
+                <div class="hidden md:flex items-center gap-1.5 font-mono text-xs tracking-wider uppercase text-ink/80 bg-ink/5 px-3 py-1 rounded-full border border-ink/10">
+                    <span>IST</span>
+                    <span>//</span>
+                    <span id="live-clock" class="font-semibold text-ink">11:20:00</span>
+                </div>
+            </div>
+
+            <!-- Center: Frosted Glass Pill Navbar -->
+            <nav aria-label="Primary Navigation" class="hidden md:flex items-center gap-1 bg-ink/10 backdrop-blur-md border border-ink/15 px-2 py-1.5 rounded-full">
+                <a href="#work" class="magnetic-item px-4 py-1.5 rounded-full font-mono text-xs uppercase tracking-wider text-ink hover:bg-ivory hover:text-ink transition-all duration-300">Work</a>
+                <a href="#capabilities" class="magnetic-item px-4 py-1.5 rounded-full font-mono text-xs uppercase tracking-wider text-ink hover:bg-ivory hover:text-ink transition-all duration-300">Capabilities</a>
+                <a href="#process" class="magnetic-item px-4 py-1.5 rounded-full font-mono text-xs uppercase tracking-wider text-ink hover:bg-ivory hover:text-ink transition-all duration-300">Process</a>
+                <a href="#contact" class="magnetic-item px-4 py-1.5 rounded-full font-mono text-xs uppercase tracking-wider text-ink hover:bg-ivory hover:text-ink transition-all duration-300">Contact</a>
+            </nav>
+
+            <!-- Right: Contact Badge & Mobile Trigger -->
+            <div class="flex items-center gap-3">
+                <a href="#contact" class="hidden sm:flex items-center gap-2.5 bg-ink text-ivory px-4 py-2 rounded-full font-mono text-[11px] uppercase tracking-wider hover:bg-ivory hover:text-ink border border-ink transition-all duration-300 shadow-sm" data-cursor="CONTACT">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-ivory opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-ivory"></span>
+                    </span>
+                    <span>Get in Touch</span>
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" aria-label="Toggle Menu" aria-expanded="false" aria-controls="mobile-drawer" class="md:hidden bg-ivory text-ink border border-ink px-3.5 py-2 rounded-full font-mono text-xs uppercase tracking-wider flex items-center gap-2">
+                    <span id="mobile-menu-text">Menu</span>
+                    <span class="text-sm leading-none">+</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Responsive Drawer -->
+        <div id="mobile-drawer" class="md:hidden hidden mt-3 bg-ink text-ivory rounded-3xl p-6 border border-ivory/20 shadow-2xl">
+            <div class="flex flex-col gap-4 font-display text-2xl">
+                <a href="#work" class="mobile-nav-link py-2 border-b border-ivory/10 flex justify-between items-center">
+                    <span>Selected Work</span>
+                    <span class="font-mono text-xs text-burnt">01</span>
+                </a>
+                <a href="#capabilities" class="mobile-nav-link py-2 border-b border-ivory/10 flex justify-between items-center">
+                    <span>Capabilities</span>
+                    <span class="font-mono text-xs text-burnt">02</span>
+                </a>
+                <a href="#process" class="mobile-nav-link py-2 border-b border-ivory/10 flex justify-between items-center">
+                    <span>Process</span>
+                    <span class="font-mono text-xs text-burnt">03</span>
+                </a>
+                <a href="#contact" class="mobile-nav-link py-2 flex justify-between items-center">
+                    <span>Get in Touch</span>
+                    <span class="font-mono text-xs text-burnt">04</span>
+                </a>
+            </div>
+            <div class="mt-6 pt-4 border-t border-ivory/15 flex items-center justify-between font-mono text-xs text-ivory/70">
+                <span>WEB DEVELOPER</span>
+                <span id="mobile-clock">IST // 11:20</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==========================================
+         [01] HERO SECTION (SWISS ARCHITECTURAL GRID)
+    =========================================== -->
+    <main class="pt-24 sm:pt-28 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-14">
+
+        <section class="hairline-t hairline-l hairline-r">
+            <!-- Top Metadata Bar -->
+            <div class="grid grid-cols-12 hairline-b text-xs font-mono uppercase tracking-wider">
+                <div class="col-span-6 sm:col-span-4 p-3 sm:p-4 hairline-r flex items-center gap-2">
+                    <span class="text-ivory font-semibold">01</span>
+                    <span>// PORTFOLIO 2026</span>
+                </div>
+                <div class="hidden sm:flex sm:col-span-4 p-4 hairline-r items-center justify-between">
+                    <span>ROLE: WEB DEVELOPER</span>
+                </div>
+                <div class="col-span-6 sm:col-span-4 p-3 sm:p-4 flex items-center justify-end gap-2">
+                    <span>4 LIVE PROJECTS</span>
+                    <span class="text-ivory">•</span>
+                    <span>WEB DEV</span>
+                </div>
+            </div>
+
+            <!-- Main Display Headline Area -->
+            <div class="p-5 sm:p-10 lg:p-14 hairline-b">
+                <h1 class="font-display font-bold hero-title text-ink tracking-tight">
+                    <span class="reveal-mask">
+                        <span class="reveal-line">Building <span class="serif-spotlight">responsive</span></span>
+                    </span>
+                    <span class="reveal-mask">
+                        <span class="reveal-line" style="transition-delay: 0.08s;">websites and web apps</span>
+                    </span>
+                    <span class="reveal-mask">
+                        <span class="reveal-line" style="transition-delay: 0.16s;">that are <span class="serif-spotlight">live</span> today.</span>
+                    </span>
+                </h1>
+            </div>
+
+            <!-- Lower Asymmetric 12-Col Split -->
+            <div class="grid grid-cols-1 lg:grid-cols-12">
+
+                <!-- Left Sub-Column: Bio + Magnetic CTA (Cols 1-6) -->
+                <div class="lg:col-span-6 p-6 sm:p-10 lg:p-12 hairline-b lg:hairline-b-0 lg:hairline-r flex flex-col justify-between gap-8">
+                    <div class="space-y-5">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ink/10 border border-ink/15 font-mono text-[11px] uppercase tracking-wider">
+                            <span class="w-1.5 h-1.5 rounded-full bg-ivory"></span>
+                            <span>Web Development</span>
+                        </div>
+                        <p class="text-lg sm:text-xl text-ink/90 leading-relaxed max-w-[54ch] font-normal">
+                            I'm sanjeev, a web developer. I build websites and web applications with HTML, CSS, JavaScript, Node.js and Supabase &mdash; from business websites to an online course platform with email authentication and admin-managed student access.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-4 pt-2">
+                        <!-- Primary Magnetic CTA Button -->
+                        <a href="#work" id="hero-magnetic-cta" class="magnetic-btn group relative inline-flex items-center gap-4 bg-ivory text-ink px-7 py-4 rounded-full font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider border border-ink shadow-lg overflow-hidden transition-transform duration-300" data-cursor="EXPLORE">
+                            <span class="relative z-10 group-hover:text-ivory transition-colors duration-300">Explore Selected Works</span>
+                            <span class="relative z-10 w-7 h-7 rounded-full bg-ink text-ivory group-hover:bg-ivory group-hover:text-ink flex items-center justify-center transition-all duration-300">
+                                <svg class="w-3.5 h-3.5 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M7 17L17 7M17 7H8M17 7V16"/>
+                                </svg>
+                            </span>
+                            <span class="btn-hover-bg absolute inset-0 bg-ink translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
+                        </a>
+
+                        <!-- Secondary Trigger -->
+                        <a href="#capabilities" class="px-6 py-4 rounded-full font-mono text-xs sm:text-sm uppercase tracking-wider border border-ink/30 hover:border-ivory hover:bg-rust/50 transition-all duration-300">
+                            Skills
+                        </a>
+                    </div>
+
+                    <!-- Key Facts Footnote -->
+                    <div class="grid grid-cols-3 gap-4 pt-6 hairline-t font-mono">
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-display font-bold text-ivory">04</div>
+                            <div class="text-[11px] uppercase tracking-wider text-ink/75">Live Projects</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-display font-bold text-ink">05</div>
+                            <div class="text-[11px] uppercase tracking-wider text-ink/75">Core Technologies</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-display font-bold text-ink">Responsive</div>
+                            <div class="text-[11px] uppercase tracking-wider text-ink/75">Design Approach</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Sub-Column: Interactive "Mesh <-> Code" widget (Cols 7-12) -->
+                <div class="lg:col-span-6 p-6 sm:p-10 lg:p-12 bg-rust/40 flex flex-col justify-between relative overflow-hidden">
+
+                    <!-- Widget Header & Mode Switcher -->
+                    <div class="flex flex-wrap items-center justify-between gap-3 mb-6 z-10">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-ivory"></span>
+                            <span class="font-mono text-xs uppercase tracking-wider ml-1 text-ink/80">INTERACTIVE CANVAS</span>
+                        </div>
+
+                        <!-- Toggle Pill -->
+                        <div class="inline-flex bg-ink/15 p-1 rounded-full border border-ink/20 font-mono text-xs">
+                            <button id="tab-mesh-btn" class="px-3.5 py-1 rounded-full bg-ivory text-ink font-semibold transition-all duration-200">
+                                3D Mesh
+                            </button>
+                            <button id="tab-code-btn" class="px-3.5 py-1 rounded-full text-ink hover:text-ivory transition-all duration-200">
+                                Live Code
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Mode 1: Interactive 3D Wireframe Geometric Canvas -->
+                    <div id="hero-mesh-panel" class="relative w-full h-[270px] sm:h-[310px] rounded-2xl bg-ink/95 border border-ink overflow-hidden flex items-center justify-center shadow-2xl" data-cursor="MOVE">
+                        <canvas id="wireframe-canvas" class="w-full h-full" aria-label="Interactive rotating wireframe shape" role="img"></canvas>
+                        <div class="absolute bottom-3 left-4 right-4 flex items-center justify-between pointer-events-none font-mono text-[11px] text-ivory/70">
+                            <span id="mesh-coords">ROTATION: X:0.42 Y:0.88</span>
+                            <span class="text-burnt bg-ivory/10 px-2.5 py-0.5 rounded-full border border-ivory/15">CANVAS 2D</span>
+                        </div>
+                    </div>
+
+                    <!-- Mode 2: Live Code <-> UI Token Editor -->
+                    <div id="hero-code-panel" class="hidden w-full h-[270px] sm:h-[310px] rounded-2xl bg-ink text-ivory p-5 border border-ivory/20 font-mono text-xs overflow-y-auto shadow-2xl">
+                        <div class="flex items-center justify-between pb-3 mb-3 border-b border-ivory/15 text-ivory/60">
+                            <span>theme.js</span>
+                            <span class="text-burnt">● LIVE PREVIEW</span>
+                        </div>
+                        <pre class="leading-relaxed text-[11px] sm:text-xs overflow-x-auto"><code class="text-ivory/90"><span class="text-burnt">export const</span> portfolioTheme = {
+  canvas: <span class="text-amber-200">'#C84B31'</span>, <span class="text-ivory/40">// Burnt Orange</span>
+  surface: <span class="text-amber-200">'#A83820'</span>, <span class="text-ivory/40">// Deep Rust</span>
+  spotlight: <span class="text-amber-200">'#FAF5EE'</span>, <span class="text-ivory/40">// Warm Ivory</span>
+  animation: {
+    meshSpeed: <span id="code-speed-val" class="text-burnt font-bold">2</span>,
+    easing: <span class="text-amber-200">'cubic-bezier(0.22, 1, 0.36, 1)'</span>
+  }
+};</code></pre>
+                        <div class="mt-4 pt-3 border-t border-ivory/15 flex items-center justify-between gap-4">
+                            <label for="mesh-speed-slider" class="text-[11px] uppercase tracking-wider text-ivory/80">Mesh Velocity:</label>
+                            <input id="mesh-speed-slider" type="range" min="1" max="5" step="0.5" value="2" class="accent-[#C84B31] w-36 cursor-pointer">
+                        </div>
+                    </div>
+
+                    <!-- Bottom Interactive Bar -->
+                    <div class="mt-5 flex items-center justify-between font-mono text-xs text-ink/80">
+                        <span>MOVE CURSOR TO ROTATE MESH</span>
+                        <button id="morph-shape-btn" class="underline decoration-ivory underline-offset-4 hover:text-ivory transition-colors uppercase">
+                            Switch Geometry ↻
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             [02] SELECTED WORKS (EDITORIAL LIST + PREVIEW)
+        =========================================== -->
+        <section id="work" class="pt-24 sm:pt-36">
+
+            <!-- Section Header + Category Filter -->
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between pb-10 hairline-b gap-6">
+                <div>
+                    <div class="font-mono text-xs uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <span class="px-2 py-0.5 bg-ivory text-ink rounded font-semibold">02</span>
+                        <span>// SELECTED PROJECTS</span>
+                    </div>
+                    <h2 class="font-display font-bold section-title text-ink">
+                        Selected <span class="serif-spotlight">Works</span>
+                    </h2>
+                </div>
+
+                <!-- Interactive Filter Buttons -->
+                <div class="flex flex-wrap items-center gap-2 font-mono text-xs" aria-label="Project Filter">
+                    <button data-filter="all" aria-pressed="true" class="filter-btn active-filter px-4 py-2 rounded-full bg-ink text-ivory border border-ink uppercase tracking-wider transition-all">
+                        All (04)
+                    </button>
+                    <button data-filter="webapp" aria-pressed="false" class="filter-btn px-4 py-2 rounded-full bg-transparent text-ink border border-ink/25 hover:border-ink uppercase tracking-wider transition-all">
+                        Web App
+                    </button>
+                    <button data-filter="business" aria-pressed="false" class="filter-btn px-4 py-2 rounded-full bg-transparent text-ink border border-ink/25 hover:border-ink uppercase tracking-wider transition-all">
+                        Business Sites
+                    </button>
+                    <button data-filter="workshop" aria-pressed="false" class="filter-btn px-4 py-2 rounded-full bg-transparent text-ink border border-ink/25 hover:border-ink uppercase tracking-wider transition-all">
+                        Workshop Site
+                    </button>
+                </div>
+            </div>
+
+            <!-- Case Studies List -->
+            <div id="projects-list" class="divide-y divide-ink/20 hairline-b">
+
+                <!-- Project 01 -->
+                <article class="project-row group cursor-pointer py-8 sm:py-11 px-3 sm:px-6"
+                         role="button" tabindex="0"
+                         aria-label="Open details: ARCHIVIZ Academy"
+                         data-category="webapp"
+                         data-project-id="0"
+                         data-cursor="DETAILS">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 items-center gap-4 lg:gap-6">
+                        <div class="lg:col-span-1 font-mono text-xs sm:text-sm text-ink/70">
+                            [01]
+                        </div>
+                        <div class="lg:col-span-5">
+                            <h3 class="font-display font-bold text-2xl sm:text-4xl tracking-tight text-ink flex flex-wrap items-baseline gap-x-2.5">
+                                <span>ARCHIVIZ</span>
+                                <span class="project-serif-accent serif-spotlight text-3xl sm:text-4xl transition-colors">Academy</span>
+                            </h3>
+                            <p class="text-sm text-ink/75 mt-1 lg:hidden">An online learning platform with recorded SketchUp training, email authentication and admin-managed student access.</p>
+                        </div>
+                        <div class="lg:col-span-4 flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase">
+                            <span class="px-3 py-1 rounded-full border border-ink/25 bg-ink/5">HTML</span>
+                            <span class="px-3 py-1 rounded-full border border-ink/25 bg-ink/5">CSS</span>
+                            <span class="px-3 py-1 rounded-full border border-ink/25 bg-ink/5">JavaScript</span>
+                            <span class="px-3 py-1 rounded-full border border-ink/25 bg-ink/5">Node.js</span>
+                            <span class="px-3 py-1 rounded-full border border-ink/25 bg-ink/5">Supabase</span>
+                        </div>
+                        <div class="lg:col-span-2 flex items-center justify-between lg:justify-end gap-4 font-mono text-xs">
+                            <span>WEB DEVELOPMENT</span>
+                            <span class="project-arrow w-10 h-10 rounded-full border border-ink flex items-center justify-center transition-all duration-300">
+                                ↗
+                            </span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 02 -->
+                <article class="project-row group cursor-pointer py-8 sm:py-11 px-3 sm:px-6"
+                         role="button" tabindex="0"
+                         aria-label="Open details: C.C.R. Construction"
+                         data-category="business"
+                         data-project-id="1"
+                         data-cursor="DETAILS">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 items-center gap-4 lg:gap-6">
+                        <div class="lg:col-span-1 font-mono text-xs sm:text-sm text-ink/70">
+                            [02]
+                        </div>
+                        <div class="lg:col-span-5">
+                            <h3 class="font-display font-bold text-2xl sm:text-4xl tracking-tight text-ink flex flex-wrap items-baseline gap-x-2.5">
+                                <span>C.C.R.</span>
+                                <span class="project-serif-accent serif-spotlight text-3xl sm:text-4xl transition-colors">Construction</span>
+                            </h3>
+                            <p class="text-sm text-ink/75 mt-1 lg:hidden">A professional website showcasing construction services and company information.</p>
+                        </div>
+                        <div class="lg:col-span-4 flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase">
+                            <span class="px-3 py-1 rounded-full border border-ink/25 bg-ink/5">Website Development</span>
+                        </div>
+                        <div class="lg:col-span-2 flex items-center justify-between lg:justify-end gap-4 font-mono text-xs">
+                            <span>WEB DEVELOPMENT</span>
+                            <span class="project-arrow w-10 h-10 rounded-full border border-ink flex items-center justify-center transition-all duration-300">
+                                ↗
+                            </span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 03 -->
+                <article class="project-row group cursor-pointer py-8 sm:py-11 px-3 sm:px-6"
+                         role="button" tabindex="0"
+                         aria-label="Open details: Phoenix Star Event Management"
+                         data-category="business"
+                         data-project-id="2"
+                         data-cursor="DETAILS">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 items-center gap-4 lg:gap-6">
+                        <div class="lg:col-span-1 font-mono text-xs sm:text-sm text-ink/70">
+                            [03]
+                        </div>
+                        <div class="lg:col-span-5">
+                            <h3 class="font-display font-bold text-2xl sm:text-4xl tracking-tight text-ink flex flex-wrap items-baseline gap-x-2.5">
+                                <span>Phoenix Star</span>
+                                <span class="project-serif-accent serif-spotlight text-3xl sm:text-4xl transition-colors">Event Management</span>
+                            </h3>
+                            <p class="text-sm text-ink/75 mt-1 lg:hidden">A website showcasing event management and decoration services.</p>
+                        </div>
+                        <div class="lg:col-span-4 flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase">
+                            <span class="px-3 py-1 rounded-full border border-ink/25 bg-ink/5">Website Development</span>
+                        </div>
+                        <div class="lg:col-span-2 flex items-center justify-between lg:justify-end gap-4 font-mono text-xs">
+                            <span>WEB DEVELOPMENT</span>
+                            <span class="project-arrow w-10 h-10 rounded-full border border-ink flex items-center justify-center transition-all duration-300">
+                                ↗
+                            </span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 04 -->
+                <article class="project-row group cursor-pointer py-8 sm:py-11 px-3 sm:px-6"
+                         role="button" tabindex="0"
+                         aria-label="Open details: AI Mastery Workshop"
+                         data-category="workshop"
+                         data-project-id="3"
+                         data-cursor="DETAILS">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 items-center gap-4 lg:gap-6">
+                        <div class="lg:col-span-1 font-mono text-xs sm:text-sm text-ink/70">
+                            [04]
+                        </div>
+                        <div class="lg:col-span-5">
+                            <h3 class="font-display font-bold text-2xl sm:text-4xl tracking-tight text-ink flex flex-wrap items-baseline gap-x-2.5">
+                                <span>AI Mastery</span>
+                                <span class="project-serif-accent serif-spotlight text-3xl sm:text-4xl transition-colors">Workshop</span>
+                            </h3>
+                            <p class="text-sm text-ink/75 mt-1 lg:hidden">A website presenting an AI workshop, its learning opportunities and programme information.</p>
+                        </div>
+                        <div class="lg:col-span-4 flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase">
+                            <span class="px-3 py-1 rounded-full border border-ink/25 bg-ink/5">Web Project</span>
+                        </div>
+                        <div class="lg:col-span-2 flex items-center justify-between lg:justify-end gap-4 font-mono text-xs">
+                            <span>WEB DEVELOPMENT</span>
+                            <span class="project-arrow w-10 h-10 rounded-full border border-ink flex items-center justify-center transition-all duration-300">
+                                ↗
+                            </span>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- ==========================================
+             [03] TECHNICAL CAPABILITIES (BENTO GRID)
+        =========================================== -->
+        <section id="capabilities" class="pt-24 sm:pt-36">
+
+            <div class="mb-12">
+                <div class="font-mono text-xs uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <span class="px-2 py-0.5 bg-ivory text-ink rounded font-semibold">03</span>
+                    <span>// SKILLS & TECHNOLOGY</span>
+                </div>
+                <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+                    <h2 class="font-display font-bold section-title text-ink">
+                        Technical <span class="serif-spotlight">Capabilities</span>
+                    </h2>
+                    <p class="font-mono text-xs uppercase tracking-wider text-ink/80 max-w-md">
+                        CLICK A SKILL TO SEE HOW IT IS USED, OR DRAG THE SLIDER BELOW TO COMPARE A LAYOUT SKETCH WITH A FINISHED UI.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 12-Column Asymmetric Bento Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                <!-- Card A: Frontend Development (Span 7 cols) -->
+                <div class="bento-card lg:col-span-7 p-6 sm:p-9 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between font-mono text-xs uppercase tracking-wider text-ivory/90 mb-4">
+                            <span>[A] FRONTEND DEVELOPMENT</span>
+                            <span class="px-2.5 py-0.5 rounded-full bg-ink text-ivory">CORE SKILLS</span>
+                        </div>
+                        <h3 class="font-display font-bold text-2xl sm:text-3xl text-ink mb-2">
+                            Clean, responsive <span class="serif-spotlight">interfaces.</span>
+                        </h3>
+                        <p class="text-sm sm:text-base text-ink/85 mb-6">
+                            Select any skill below to see how it is used.
+                        </p>
+
+                        <!-- Interactive Skill Pill Cloud -->
+                        <div id="tech-pill-cloud" class="flex flex-wrap gap-2.5 my-4">
+                            <button data-tech="html" class="tech-pill px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider bg-ivory text-ink border border-ink font-semibold transition-all">
+                                HTML5
+                            </button>
+                            <button data-tech="css" class="tech-pill px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider bg-ink/15 text-ink border border-ink/30 hover:border-ivory transition-all">
+                                CSS3
+                            </button>
+                            <button data-tech="js" class="tech-pill px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider bg-ink/15 text-ink border border-ink/30 hover:border-ivory transition-all">
+                                JavaScript
+                            </button>
+                            <button data-tech="responsive" class="tech-pill px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider bg-ink/15 text-ink border border-ink/30 hover:border-ivory transition-all">
+                                Responsive Design
+                            </button>
+                            <button data-tech="uiux" class="tech-pill px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider bg-ink/15 text-ink border border-ink/30 hover:border-ivory transition-all">
+                                UI/UX Fundamentals
+                            </button>
+                            <button data-tech="deploy" class="tech-pill px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider bg-ink/15 text-ink border border-ink/30 hover:border-ivory transition-all">
+                                Website Deployment
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Inspection Readout Box -->
+                    <div class="mt-6 p-4 rounded-2xl bg-ink text-ivory border border-ivory/20 font-mono text-xs" aria-live="polite">
+                        <div class="flex items-center justify-between gap-3 text-burnt mb-1.5">
+                            <span id="tech-readout-title">MODULE: HTML5</span>
+                            <span id="tech-readout-exp" class="text-right">USED IN: ALL WEB PROJECTS</span>
+                        </div>
+                        <p id="tech-readout-desc" class="text-ivory/85 font-sans text-sm leading-relaxed">
+                            Page structure and content markup for the websites I build.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card B: Backend (Span 5 cols) -->
+                <div class="bento-card lg:col-span-5 p-6 sm:p-9 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between font-mono text-xs uppercase tracking-wider text-ivory/90 mb-4">
+                            <span>[B] BACKEND BASICS</span>
+                            <span class="flex items-center gap-1.5 text-ivory">
+                                <span class="w-2 h-2 rounded-full bg-ivory animate-pulse"></span>
+                                NODE.JS + SUPABASE
+                            </span>
+                        </div>
+                        <h3 class="font-display font-bold text-2xl sm:text-3xl text-ink mb-2">
+                            Backend with <span class="serif-spotlight">Node.js</span> & Supabase
+                        </h3>
+                        <p class="text-sm text-ink/85 mb-5">
+                            Supabase authentication and database power the ARCHIVIZ Academy platform: email sign-in, admin approval and student course access.
+                        </p>
+                    </div>
+
+                    <!-- Illustrative Flow Window -->
+                    <div class="rounded-2xl bg-ink text-ivory p-4 border border-ivory/20 font-mono text-xs shadow-inner">
+                        <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-ivory/15 text-[11px] text-ivory/60">
+                            <span>supabase://auth + database</span>
+                            <button id="replay-flow-btn" class="text-burnt hover:text-ivory underline uppercase">Replay Flow ↗</button>
+                        </div>
+                        <div id="flow-logs" class="space-y-1.5 text-[11px] h-[125px] overflow-hidden leading-relaxed">
+                            <div class="text-ivory/70"><span class="text-burnt">STEP 01</span> student signs up with email</div>
+                            <div class="text-ivory/70"><span class="text-burnt">STEP 02</span> account waits for admin approval</div>
+                            <div class="text-ivory/70"><span class="text-burnt">STEP 03</span> admin approves the student</div>
+                            <div class="text-ivory/70"><span class="text-burnt">STEP 04</span> student accesses the course modules</div>
+                        </div>
+                        <div class="mt-3 pt-2.5 border-t border-ivory/15 flex items-center justify-between text-[11px]">
+                            <span>PLATFORM: <strong class="text-ivory">ARCHIVIZ ACADEMY</strong></span>
+                            <span class="text-ivory/70">ILLUSTRATIVE FLOW</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card C: Deployment (Span 5 cols) -->
+                <div id="deploy-card" class="bento-card lg:col-span-5 p-6 sm:p-9 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between font-mono text-xs uppercase tracking-wider text-ivory/90 mb-4">
+                            <span>[C] WEBSITE DEPLOYMENT</span>
+                            <span>HOSTED ONLINE</span>
+                        </div>
+                        <h3 class="font-display font-bold text-2xl sm:text-3xl text-ink mb-2">
+                            Live on the <span class="serif-spotlight">web.</span>
+                        </h3>
+                        <p class="text-sm text-ink/85 mb-6">
+                            Each project is published online and can be visited through its own link, hosted on Render, Vercel, Netlify and Bolt.
+                        </p>
+                    </div>
+
+                    <!-- 4 Hosting Tiles -->
+                    <div class="grid grid-cols-2 gap-3 pt-2">
+                        <div class="bg-ink/90 rounded-2xl p-3.5 border border-ivory/15">
+                            <div class="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-ivory/60"><span class="w-1.5 h-1.5 rounded-full bg-ivory animate-pulse"></span>Live on</div>
+                            <div class="font-display font-bold text-lg text-ivory mt-1">Render</div>
+                            <div class="font-mono text-[10px] text-burnt mt-0.5">ARCHIVIZ Academy</div>
+                        </div>
+                        <div class="bg-ink/90 rounded-2xl p-3.5 border border-ivory/15">
+                            <div class="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-ivory/60"><span class="w-1.5 h-1.5 rounded-full bg-ivory animate-pulse"></span>Live on</div>
+                            <div class="font-display font-bold text-lg text-ivory mt-1">Vercel</div>
+                            <div class="font-mono text-[10px] text-burnt mt-0.5">C.C.R. Construction</div>
+                        </div>
+                        <div class="bg-ink/90 rounded-2xl p-3.5 border border-ivory/15">
+                            <div class="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-ivory/60"><span class="w-1.5 h-1.5 rounded-full bg-ivory animate-pulse"></span>Live on</div>
+                            <div class="font-display font-bold text-lg text-ivory mt-1">Netlify</div>
+                            <div class="font-mono text-[10px] text-burnt mt-0.5">Phoenix Star Events</div>
+                        </div>
+                        <div class="bg-ink/90 rounded-2xl p-3.5 border border-ivory/15">
+                            <div class="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-ivory/60"><span class="w-1.5 h-1.5 rounded-full bg-ivory animate-pulse"></span>Live on</div>
+                            <div class="font-display font-bold text-lg text-ivory mt-1">Bolt</div>
+                            <div class="font-mono text-[10px] text-burnt mt-0.5">AI Mastery Workshop</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card D: Wireframe-to-UI Comparison Slider (Span 7 cols) -->
+                <div class="bento-card lg:col-span-7 p-6 sm:p-9 flex flex-col justify-between">
+                    <div class="mb-4">
+                        <div class="flex items-center justify-between font-mono text-xs uppercase tracking-wider text-ivory/90 mb-3">
+                            <span>[D] DESIGN-TO-CODE</span>
+                            <span>DRAG SLIDER TO COMPARE ↔</span>
+                        </div>
+                        <h3 class="font-display font-bold text-2xl sm:text-3xl text-ink">
+                            From <span class="serif-spotlight">wireframe</span> to finished interface.
+                        </h3>
+                        <p class="font-mono text-[11px] uppercase tracking-wider text-ink/75 mt-2">Illustrative example &mdash; not a screenshot of a client project</p>
+                    </div>
+
+                    <!-- Interactive Before/After Slider Container -->
+                    <div id="comparison-widget" tabindex="0" role="slider" aria-label="Compare wireframe and finished interface" aria-valuemin="5" aria-valuemax="95" aria-valuenow="50" class="relative w-full h-[210px] sm:h-[230px] rounded-2xl overflow-hidden border border-ink select-none cursor-ew-resize shadow-xl" data-cursor="DRAG">
+
+                        <!-- LAYER 1 (Bottom / Full Width): Finished Interface Example -->
+                        <div class="absolute inset-0 bg-ink text-ivory p-5 sm:p-6 flex flex-col justify-between">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2.5">
+                                    <span class="w-8 h-8 rounded-lg bg-burnt flex items-center justify-center font-display font-bold text-ink">▶</span>
+                                    <div>
+                                        <div class="font-display font-bold text-sm sm:text-base text-ivory">Course Dashboard</div>
+                                        <div class="font-mono text-[10px] text-ivory/60">UI EXAMPLE // RESPONSIVE</div>
+                                    </div>
+                                </div>
+                                <span class="px-3 py-1 rounded-full bg-burnt text-ink font-mono text-[10px] font-bold uppercase">FINISHED UI</span>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-3 my-2">
+                                <div class="bg-ivory/10 p-3 rounded-xl border border-ivory/15">
+                                    <div class="font-mono text-[10px] text-ivory/60">LESSONS</div>
+                                    <div class="font-display font-bold text-lg text-ivory">Recorded</div>
+                                </div>
+                                <div class="bg-ivory/10 p-3 rounded-xl border border-ivory/15">
+                                    <div class="font-mono text-[10px] text-ivory/60">MODULES</div>
+                                    <div class="font-display font-bold text-lg text-burnt">Organised</div>
+                                </div>
+                                <div class="bg-ivory/10 p-3 rounded-xl border border-ivory/15">
+                                    <div class="font-mono text-[10px] text-ivory/60">ACCESS</div>
+                                    <div class="font-display font-bold text-lg text-ivory">Approved</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between text-xs font-mono text-ivory/70">
+                                <span>STATUS: READY TO USE</span>
+                                <span class="text-burnt">RENDERED UI →</span>
+                            </div>
+                        </div>
+
+                        <!-- LAYER 2 (Clipped Overlay): Raw Wireframe -->
+                        <div id="wireframe-overlay" class="absolute inset-0 bg-ivory text-ink p-5 sm:p-6 flex flex-col justify-between" style="clip-path: inset(0 50% 0 0);">
+                            <div class="flex items-center justify-between border-b border-dashed border-ink/40 pb-2">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 border border-dashed border-ink flex items-center justify-center font-mono text-xs">[ICON]</div>
+                                    <div>
+                                        <div class="font-mono text-xs uppercase font-bold">&lt;PageTitle /&gt;</div>
+                                        <div class="font-mono text-[10px] text-ink/60">LAYOUT SKETCH // GRID</div>
+                                    </div>
+                                </div>
+                                <span class="px-2.5 py-0.5 border border-ink font-mono text-[10px] uppercase">WIREFRAME</span>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-3 my-2 font-mono">
+                                <div class="border border-dashed border-ink/60 p-3 bg-ink/5">
+                                    <div class="text-[10px] text-ink/60">block_01</div>
+                                    <div class="text-xs font-bold mt-1">{lessons}</div>
+                                </div>
+                                <div class="border border-dashed border-ink/60 p-3 bg-ink/5">
+                                    <div class="text-[10px] text-ink/60">block_02</div>
+                                    <div class="text-xs font-bold mt-1">{modules}</div>
+                                </div>
+                                <div class="border border-dashed border-ink/60 p-3 bg-ink/5">
+                                    <div class="text-[10px] text-ink/60">block_03</div>
+                                    <div class="text-xs font-bold mt-1">{access}</div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between text-xs font-mono text-ink/70">
+                                <span>← LAYOUT SKETCH</span>
+                                <span>12-COLUMN GRID</span>
+                            </div>
+                        </div>
+
+                        <!-- Slider Divider Handle -->
+                        <div id="comparison-handle" class="absolute top-0 bottom-0 left-1/2 w-0.5 bg-burnt z-20 pointer-events-none">
+                            <div class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-9 h-9 rounded-full bg-ivory text-ink border-2 border-ink shadow-lg flex items-center justify-center font-mono text-xs font-bold">
+                                ↔
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==========================================
+             [04] PROCESS
+        =========================================== -->
+        <section id="process" class="pt-24 sm:pt-36 pb-24 sm:pb-36">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+
+                <!-- Sticky Left Column (Cols 1-5) -->
+                <div class="lg:col-span-5 lg:sticky lg:top-28">
+                    <div class="font-mono text-xs uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <span class="px-2 py-0.5 bg-ivory text-ink rounded font-semibold">04</span>
+                        <span>// HOW I WORK</span>
+                    </div>
+                    <h2 class="font-display font-bold section-title text-ink mb-6">
+                        How I build <span class="serif-spotlight">responsive</span> websites.
+                    </h2>
+                    <p class="text-base sm:text-lg text-ink/85 leading-relaxed mb-8">
+                        A good website starts with a clear structure and is refined until it works well on every screen.
+                    </p>
+                    <div class="hidden lg:flex items-center gap-3 font-mono text-xs uppercase tracking-wider text-ivory bg-ink/15 px-4 py-3 rounded-2xl border border-ink/20">
+                        <span class="w-2 h-2 rounded-full bg-ivory animate-ping"></span>
+                        <span>Scroll to illuminate each step</span>
+                    </div>
+                </div>
+
+                <!-- Scrolling Right Column (Cols 6-12) -->
+                <div class="lg:col-span-7 space-y-6">
+
+                    <!-- Stage 01 -->
+                    <div class="process-card active-process rounded-3xl p-7 sm:p-10" data-step="01">
+                        <div class="flex items-center justify-between font-mono text-xs uppercase tracking-wider mb-6">
+                            <span class="px-3 py-1 rounded-full bg-ivory text-ink font-bold">STEP 01 // PLAN</span>
+                            <span class="text-ivory">01 / 03</span>
+                        </div>
+                        <h3 class="font-display font-bold text-2xl sm:text-3xl text-ink mb-3">
+                            Structure <span class="serif-spotlight">First.</span>
+                        </h3>
+                        <p class="text-ink/90 leading-relaxed mb-6">
+                            I start by understanding what the website needs to do, then organise the pages, content and layout so the build stays clear and easy to maintain.
+                        </p>
+                        <div class="pt-4 hairline-t flex flex-wrap gap-3 font-mono text-xs text-ivory">
+                            <span>• Page Structure</span>
+                            <span>• Layout Planning</span>
+                            <span>• Content Flow</span>
+                        </div>
+                    </div>
+
+                    <!-- Stage 02 -->
+                    <div class="process-card rounded-3xl p-7 sm:p-10" data-step="02">
+                        <div class="flex items-center justify-between font-mono text-xs uppercase tracking-wider mb-6">
+                            <span class="px-3 py-1 rounded-full bg-ivory text-ink font-bold">STEP 02 // BUILD</span>
+                            <span class="text-ivory">02 / 03</span>
+                        </div>
+                        <h3 class="font-display font-bold text-2xl sm:text-3xl text-ink mb-3">
+                            Responsive, <span class="serif-spotlight">Interactive</span> Interfaces.
+                        </h3>
+                        <p class="text-ink/90 leading-relaxed mb-6">
+                            I build the interface with HTML, CSS and JavaScript, and add backend features with Node.js and Supabase where a project needs them, such as email authentication.
+                        </p>
+                        <div class="pt-4 hairline-t flex flex-wrap gap-3 font-mono text-xs text-ivory">
+                            <span>• HTML5 & CSS3</span>
+                            <span>• JavaScript</span>
+                            <span>• Node.js & Supabase</span>
+                        </div>
+                    </div>
+
+                    <!-- Stage 03 -->
+                    <div class="process-card rounded-3xl p-7 sm:p-10" data-step="03">
+                        <div class="flex items-center justify-between font-mono text-xs uppercase tracking-wider mb-6">
+                            <span class="px-3 py-1 rounded-full bg-ivory text-ink font-bold">STEP 03 // DEPLOY</span>
+                            <span class="text-ivory">03 / 03</span>
+                        </div>
+                        <h3 class="font-display font-bold text-2xl sm:text-3xl text-ink mb-3">
+                            Checked & <span class="serif-spotlight">Deployed.</span>
+                        </h3>
+                        <p class="text-ink/90 leading-relaxed mb-6">
+                            I check the layout across screen sizes and publish the finished website online so its audience can visit it.
+                        </p>
+                        <div class="pt-4 hairline-t flex flex-wrap gap-3 font-mono text-xs text-ivory">
+                            <span>• Responsive Checks</span>
+                            <span>• Website Deployment</span>
+                            <span>• Live Hosting</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================
+         [05] FOOTER (CONTRAST SHIFT TO SOFT BLACK)
+    =========================================== -->
+    <footer id="contact" class="bg-ink text-ivory pt-20 sm:pt-28 pb-12 px-4 sm:px-8 lg:px-14 border-t border-ink">
+        <div class="max-w-[1600px] mx-auto">
+
+            <!-- Top Row: Status + Phone -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-12 border-b border-ivory/15 gap-4 font-mono text-xs uppercase tracking-widest">
+                <div class="flex items-center gap-2.5">
+                    <span class="px-2 py-0.5 bg-burnt text-ink font-bold rounded">05</span>
+                    <span class="text-ivory/80">// GET IN TOUCH</span>
+                </div>
+                <div class="flex items-center gap-2 text-burnt">
+                    <span class="w-2 h-2 rounded-full bg-burnt animate-ping"></span>
+                    <span>PHONE: +91 9092656069</span>
+                </div>
+            </div>
+
+            <!-- Massive Interactive Headline -->
+            <div class="py-14 sm:py-20 border-b border-ivory/15">
+                <p class="font-mono text-xs uppercase tracking-widest text-ivory/60 mb-4">
+                    HAVE A WEBSITE OR WEB APP IN MIND?
+                </p>
+                <a id="footer-cta-trigger" href="tel:+919092656069" class="group block text-left w-full focus:outline-none" data-cursor="CALL" aria-label="Call +91 9092656069">
+                    <h2 class="font-display font-extrabold text-[clamp(2.5rem,7.2vw,7.5rem)] leading-[0.92] tracking-tight text-ivory group-hover:text-burnt transition-colors duration-300 flex flex-wrap items-center justify-between gap-4">
+                        <span>LET'S BUILD <span class="serif-spotlight text-burnt group-hover:text-ivory">together</span></span>
+                        <span class="inline-flex items-center justify-center w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-burnt text-ink group-hover:bg-ivory group-hover:rotate-45 transition-all duration-500 text-3xl sm:text-5xl">
+                            ↗
+                        </span>
+                    </h2>
+                </a>
+
+                <!-- Call + Copy Action Bar -->
+                <div class="mt-10 flex flex-wrap items-center gap-4">
+                    <a id="call-phone-btn" href="tel:+919092656069" class="magnetic-btn inline-flex items-center gap-3 bg-ivory text-ink hover:bg-burnt hover:text-ink px-7 py-4 rounded-full font-mono text-xs sm:text-sm font-semibold uppercase tracking-wider transition-all duration-300" data-cursor="CALL">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.95.68l1.5 4.5a1 1 0 01-.5 1.2l-2.26 1.13a11 11 0 005.52 5.52l1.13-2.26a1 1 0 011.2-.5l4.5 1.5a1 1 0 01.68.95V19a2 2 0 01-2 2h-1C9.72 21 3 14.28 3 6V5z"/>
+                        </svg>
+                        <span id="phone-text">+91 9092656069</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-ink/10">TAP TO CALL</span>
+                    </a>
+
+                    <button id="copy-phone-btn" class="px-6 py-4 rounded-full border border-ivory/25 hover:border-burnt text-ivory font-mono text-xs sm:text-sm uppercase tracking-wider transition-colors" data-cursor="COPY">
+                        Copy Number
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bottom Colophon -->
+            <div class="pt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 font-mono text-xs text-ivory/60">
+                <div>
+                    © 2026 sanjeev. Web Developer.
+                </div>
+                <div class="flex flex-wrap items-center gap-6 uppercase tracking-wider text-ivory">
+                    <a href="#work" class="hover:text-burnt transition-colors">Selected Work ↓</a>
+                    <a href="#" class="text-burnt hover:text-ivory transition-colors">Back to Top ↑</a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         PROJECT DETAIL MODAL
+    =========================================== -->
+    <div id="case-study-modal" class="fixed inset-0 z-[90] hidden items-center justify-center p-4 sm:p-6 lg:p-10 bg-ink/80 backdrop-blur-md" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="bg-ivory text-ink border-2 border-ink rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-10 relative">
+
+            <!-- Modal Top Bar -->
+            <div class="flex items-center justify-between pb-5 border-b border-ink/15 font-mono text-xs uppercase tracking-wider">
+                <span id="modal-index" class="px-3 py-1 rounded-full bg-burnt text-ink font-bold">PROJECT // 01</span>
+                <button id="close-modal-btn" class="px-4 py-1.5 rounded-full bg-ink text-ivory hover:bg-burnt hover:text-ink transition-colors font-semibold">
+                    CLOSE [ESC] ✕
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="py-6 space-y-6">
+                <div>
+                    <h3 id="modal-title" class="font-display font-bold text-3xl sm:text-5xl tracking-tight text-ink">
+                        ARCHIVIZ Academy
+                    </h3>
+                    <p id="modal-subtitle" class="text-base sm:text-lg text-ink/75 mt-2">
+                        Online learning platform
+                    </p>
+                </div>
+
+                <!-- Project Visual Banner (stylised card, not a screenshot) -->
+                <div id="modal-visual-banner" class="w-full h-52 sm:h-64 rounded-2xl bg-ink border border-ink overflow-hidden flex items-center justify-center relative">
+                </div>
+
+                <!-- 3-Column Details -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono">
+                    <div class="p-4 rounded-2xl bg-burnt/15 border border-ink/15">
+                        <div class="text-[11px] uppercase text-ink/70">CATEGORY</div>
+                        <div id="modal-metric-1" class="font-display font-bold text-lg sm:text-xl text-ink mt-1 break-words">Web App</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-burnt/15 border border-ink/15">
+                        <div class="text-[11px] uppercase text-ink/70">TECHNOLOGY</div>
+                        <div id="modal-metric-2" class="font-display font-bold text-lg sm:text-xl text-ink mt-1 break-words">HTML, CSS, JavaScript</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-burnt/15 border border-ink/15">
+                        <div class="text-[11px] uppercase text-ink/70">WORK</div>
+                        <div id="modal-metric-3" class="font-display font-bold text-lg sm:text-xl text-ink mt-1 break-words">Web Development</div>
+                    </div>
+                </div>
+
+                <!-- Overview & Live Link -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                    <div>
+                        <h4 class="font-mono text-xs uppercase tracking-wider text-burnt font-bold mb-2">// OVERVIEW</h4>
+                        <p id="modal-overview" class="text-sm sm:text-base text-ink/85 leading-relaxed"></p>
+                    </div>
+                    <div>
+                        <h4 class="font-mono text-xs uppercase tracking-wider text-burnt font-bold mb-2">// LIVE SITE</h4>
+                        <p class="text-sm sm:text-base text-ink/85 leading-relaxed break-all">
+                            <a id="modal-link-text" href="#" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 decoration-burnt hover:text-burnt transition-colors"></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer Actions -->
+            <div class="pt-6 border-t border-ink/15 flex flex-wrap items-center justify-between gap-4">
+                <div id="modal-tags" class="flex flex-wrap gap-2 font-mono text-xs"></div>
+                <a href="#" id="modal-visit-btn" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-ink text-ivory hover:bg-burnt hover:text-ink px-6 py-3 rounded-full font-mono text-xs uppercase tracking-wider font-semibold transition-colors">
+                    <span>Visit Live Site</span>
+                    <span>↗</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         APPLICATION SCRIPTS & INTERACTION ENGINE
+    =========================================== -->
+    <script>
+        (function () {
+            'use strict';
+
+            /* --------------------------------------------------
+             * 1. LIVE CLOCK (IST // HH:MM:SS)
+             * -------------------------------------------------- */
+            const clockEl = document.getElementById('live-clock');
+            const mobileClockEl = document.getElementById('mobile-clock');
+
+            function updateClock() {
+                const now = new Date();
+                const options = {
+                    timeZone: 'Asia/Kolkata',
+                    hour12: false,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                };
+                const formatted = new Intl.DateTimeFormat('en-US', options).format(now);
+                if (clockEl) clockEl.textContent = formatted;
+                if (mobileClockEl) mobileClockEl.textContent = 'IST // ' + formatted;
+            }
+            setInterval(updateClock, 1000);
+            updateClock();
+
+            /* --------------------------------------------------
+             * 2. MOBILE MENU DRAWER
+             * -------------------------------------------------- */
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileDrawer = document.getElementById('mobile-drawer');
+            const mobileMenuText = document.getElementById('mobile-menu-text');
+
+            if (mobileMenuBtn && mobileDrawer) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    const isHidden = mobileDrawer.classList.contains('hidden');
+                    mobileDrawer.classList.toggle('hidden');
+                    mobileMenuText.textContent = isHidden ? 'Close' : 'Menu';
+                    mobileMenuBtn.setAttribute('aria-expanded', String(isHidden));
+                });
+
+                document.querySelectorAll('.mobile-nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileDrawer.classList.add('hidden');
+                        mobileMenuText.textContent = 'Menu';
+                        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                    });
+                });
+            }
+
+            /* --------------------------------------------------
+             * 3. DUAL-STATE CUSTOM CURSOR & FLOATING PREVIEW
+             * -------------------------------------------------- */
+            const cursor = document.getElementById('custom-cursor');
+            const cursorLabel = document.getElementById('custom-cursor-label');
+            const previewFollower = document.getElementById('project-preview-follower');
+            const previewSlot = document.getElementById('preview-content-slot');
+
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let cursorX = mouseX;
+            let cursorY = mouseY;
+            let followerX = mouseX;
+            let followerY = mouseY;
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            function animateCursor() {
+                // Smooth interpolation for cursor and floating project preview
+                cursorX += (mouseX - cursorX) * 0.22;
+                cursorY += (mouseY - cursorY) * 0.22;
+                followerX += (mouseX - followerX) * 0.12;
+                followerY += (mouseY - followerY) * 0.12;
+
+                if (cursor) {
+                    cursor.style.left = `${cursorX}px`;
+                    cursor.style.top = `${cursorY}px`;
+                }
+                if (previewFollower) {
+                    previewFollower.style.left = `${followerX + 36}px`;
+                    previewFollower.style.top = `${followerY - 24}px`;
+                }
+
+                requestAnimationFrame(animateCursor);
+            }
+            requestAnimationFrame(animateCursor);
+
+            // Attach hover expand states to elements with [data-cursor]
+            document.querySelectorAll('[data-cursor]').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    const label = el.getAttribute('data-cursor') || 'VIEW';
+                    if (cursorLabel) cursorLabel.textContent = label;
+                    if (cursor) cursor.classList.add('cursor-expanded');
+                });
+                el.addEventListener('mouseleave', () => {
+                    if (cursor) cursor.classList.remove('cursor-expanded');
+                });
+            });
+
+            /* --------------------------------------------------
+             * 4. MAGNETIC BUTTON PHYSICS
+             * -------------------------------------------------- */
+            document.querySelectorAll('.magnetic-btn, .magnetic-item').forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    btn.style.transform = `translate(${x * 0.22}px, ${y * 0.28}px)`;
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = 'translate(0px, 0px)';
+                });
+            });
+
+            /* --------------------------------------------------
+             * 5. HERO 3D WIREFRAME CANVAS & CODE PANEL TOGGLE
+             * -------------------------------------------------- */
+            const canvas = document.getElementById('wireframe-canvas');
+            const coordsLabel = document.getElementById('mesh-coords');
+            const morphBtn = document.getElementById('morph-shape-btn');
+            const speedSlider = document.getElementById('mesh-speed-slider');
+            const speedVal = document.getElementById('code-speed-val');
+
+            const tabMeshBtn = document.getElementById('tab-mesh-btn');
+            const tabCodeBtn = document.getElementById('tab-code-btn');
+            const meshPanel = document.getElementById('hero-mesh-panel');
+            const codePanel = document.getElementById('hero-code-panel');
+
+            let resizeCanvas = function () {};
+
+            if (tabMeshBtn && tabCodeBtn) {
+                tabMeshBtn.addEventListener('click', () => {
+                    meshPanel.classList.remove('hidden');
+                    codePanel.classList.add('hidden');
+                    tabMeshBtn.className = 'px-3.5 py-1 rounded-full bg-ivory text-ink font-semibold transition-all duration-200';
+                    tabCodeBtn.className = 'px-3.5 py-1 rounded-full text-ink hover:text-ivory transition-all duration-200';
+                    resizeCanvas();
+                });
+
+                tabCodeBtn.addEventListener('click', () => {
+                    codePanel.classList.remove('hidden');
+                    meshPanel.classList.add('hidden');
+                    tabCodeBtn.className = 'px-3.5 py-1 rounded-full bg-ivory text-ink font-semibold transition-all duration-200';
+                    tabMeshBtn.className = 'px-3.5 py-1 rounded-full text-ink hover:text-ivory transition-all duration-200';
+                });
+            }
+
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                let width = 0;
+                let height = 0;
+
+                // Size the canvas to its panel, scaled for high-density screens.
+                resizeCanvas = function () {
+                    const parent = canvas.parentElement;
+                    if (!parent) return;
+                    const w = parent.clientWidth;
+                    const h = parent.clientHeight;
+                    if (!w || !h) return; // panel hidden: keep previous size
+                    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                    width = w;
+                    height = h;
+                    canvas.width = Math.round(w * dpr);
+                    canvas.height = Math.round(h * dpr);
+                    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                };
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
+
+                let shapeIndex = 0; // 0 = Torus, 1 = Sphere cage
+                let rotX = 0.4;
+                let rotY = 0.7;
+                let targetRotX = 0.4;
+                let targetRotY = 0.7;
+                let spinSpeed = 0.008;
+
+                if (speedSlider) {
+                    speedSlider.addEventListener('input', (e) => {
+                        const val = parseFloat(e.target.value);
+                        spinSpeed = val * 0.004;
+                        if (speedVal) speedVal.textContent = val;
+                    });
+                }
+
+                if (morphBtn) {
+                    morphBtn.addEventListener('click', () => {
+                        shapeIndex = (shapeIndex + 1) % 2;
+                    });
+                }
+
+                function pointToRotation(clientX, clientY) {
+                    const rect = canvas.getBoundingClientRect();
+                    const normX = ((clientX - rect.left) / rect.width - 0.5) * 2;
+                    const normY = ((clientY - rect.top) / rect.height - 0.5) * 2;
+                    targetRotY = normX * 1.6;
+                    targetRotX = normY * 1.6;
+                    if (coordsLabel) {
+                        coordsLabel.textContent = `ROTATION: X:${normY.toFixed(2)} Y:${normX.toFixed(2)}`;
+                    }
+                }
+
+                canvas.addEventListener('mousemove', (e) => pointToRotation(e.clientX, e.clientY));
+                canvas.addEventListener('touchmove', (e) => {
+                    if (e.touches[0]) pointToRotation(e.touches[0].clientX, e.touches[0].clientY);
+                }, { passive: true });
+
+                // Generate 3D vertices
+                function getVertices(mode) {
+                    const verts = [];
+                    const edges = [];
+                    if (mode === 0) {
+                        // Torus ring
+                        const rings = 14;
+                        const segments = 10;
+                        const R = 78;
+                        const r = 34;
+                        for (let i = 0; i < rings; i++) {
+                            const u = (i / rings) * Math.PI * 2;
+                            for (let j = 0; j < segments; j++) {
+                                const v = (j / segments) * Math.PI * 2;
+                                const x = (R + r * Math.cos(v)) * Math.cos(u);
+                                const y = (R + r * Math.cos(v)) * Math.sin(u);
+                                const z = r * Math.sin(v);
+                                verts.push({ x, y, z });
+                                const current = i * segments + j;
+                                const nextInRing = i * segments + ((j + 1) % segments);
+                                const nextRing = ((i + 1) % rings) * segments + j;
+                                edges.push([current, nextInRing]);
+                                edges.push([current, nextRing]);
+                            }
+                        }
+                    } else {
+                        // Sphere cage
+                        const lat = 8;
+                        const lon = 12;
+                        const radius = 98;
+                        for (let i = 0; i <= lat; i++) {
+                            const theta = (i * Math.PI) / lat;
+                            for (let j = 0; j < lon; j++) {
+                                const phi = (j * 2 * Math.PI) / lon;
+                                const x = radius * Math.sin(theta) * Math.cos(phi);
+                                const y = radius * Math.cos(theta);
+                                const z = radius * Math.sin(theta) * Math.sin(phi);
+                                verts.push({ x, y, z });
+                                const idx = i * lon + j;
+                                const nextLon = i * lon + ((j + 1) % lon);
+                                edges.push([idx, nextLon]);
+                                if (i < lat) {
+                                    edges.push([idx, (i + 1) * lon + j]);
+                                }
+                            }
+                        }
+                    }
+                    return { verts, edges };
+                }
+
+                let geometries = [getVertices(0), getVertices(1)];
+
+                function renderWireframe() {
+                    requestAnimationFrame(renderWireframe);
+
+                    // Skip drawing while the tab is hidden or the panel is not visible
+                    if (document.hidden || !width || !height || !canvas.offsetParent) return;
+
+                    ctx.clearRect(0, 0, width, height);
+
+                    // Subtle grid crosshair in background
+                    ctx.strokeStyle = 'rgba(250, 245, 238, 0.06)';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(width / 2, 0);
+                    ctx.lineTo(width / 2, height);
+                    ctx.moveTo(0, height / 2);
+                    ctx.lineTo(width, height / 2);
+                    ctx.stroke();
+
+                    rotX += (targetRotX - rotX) * 0.05 + spinSpeed * 0.6;
+                    rotY += (targetRotY - rotY) * 0.05 + spinSpeed;
+
+                    const { verts, edges } = geometries[shapeIndex];
+                    const projected = verts.map(v => {
+                        // Rotate Y
+                        let x1 = v.x * Math.cos(rotY) - v.z * Math.sin(rotY);
+                        let z1 = v.z * Math.cos(rotY) + v.x * Math.sin(rotY);
+                        // Rotate X
+                        let y2 = v.y * Math.cos(rotX) - z1 * Math.sin(rotX);
+                        let z2 = z1 * Math.cos(rotX) + v.y * Math.sin(rotX);
+
+                        const fov = 320;
+                        const scale = fov / (fov + z2 + 120);
+                        return {
+                            x: width / 2 + x1 * scale,
+                            y: height / 2 + y2 * scale,
+                            z: z2
+                        };
+                    });
+
+                    // Draw edges
+                    edges.forEach(([a, b]) => {
+                        const p1 = projected[a];
+                        const p2 = projected[b];
+                        if (!p1 || !p2) return;
+                        const depthAlpha = Math.max(0.15, Math.min(0.85, (p1.z + 110) / 220));
+                        ctx.strokeStyle = depthAlpha > 0.55 ? `rgba(250, 245, 238, ${depthAlpha})` : `rgba(200, 75, 49, ${depthAlpha})`;
+                        ctx.lineWidth = depthAlpha > 0.6 ? 1.35 : 0.8;
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    });
+
+                    // Draw accent vertices
+                    projected.forEach((p, idx) => {
+                        if (idx % 4 === 0) {
+                            ctx.fillStyle = '#FAF5EE';
+                            ctx.beginPath();
+                            ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                    });
+                }
+                renderWireframe();
+            }
+
+            /* --------------------------------------------------
+             * 6. SELECTED WORKS: DATA, FILTER, PREVIEW & MODAL
+             * -------------------------------------------------- */
+            const projectData = [
+                {
+                    index: 'PROJECT // 01',
+                    title: 'ARCHIVIZ Academy',
+                    subtitle: 'Online learning platform',
+                    category: 'Web App',
+                    badge: 'WEB APP',
+                    techLabel: 'HTML, CSS, JavaScript, Node.js, Supabase',
+                    overview: 'An online learning platform providing recorded SketchUp training, course modules and learning resources, with email authentication and admin-managed student access. Built with HTML, CSS, JavaScript, Node.js and Supabase, with manual admin approval before students access courses.',
+                    url: 'https://archiviz-academy.onrender.com/',
+                    tags: ['HTML', 'CSS', 'JavaScript', 'Node.js', 'Supabase']
+                },
+                {
+                    index: 'PROJECT // 02',
+                    title: 'C.C.R. Construction',
+                    subtitle: 'Construction company website',
+                    category: 'Business Site',
+                    badge: 'BUSINESS SITE',
+                    techLabel: 'Website Development',
+                    overview: 'A professional website showcasing construction services and company information.',
+                    url: 'https://ccrconstructionvercel.vercel.app/',
+                    tags: ['Website Development']
+                },
+                {
+                    index: 'PROJECT // 03',
+                    title: 'Phoenix Star Event Management',
+                    subtitle: 'Event management and decoration website',
+                    category: 'Business Site',
+                    badge: 'BUSINESS SITE',
+                    techLabel: 'Website Development',
+                    overview: 'A website showcasing event management and decoration services.',
+                    url: 'https://pheonix-star-event-decor.netlify.app/',
+                    tags: ['Website Development']
+                },
+                {
+                    index: 'PROJECT // 04',
+                    title: 'AI Mastery Workshop',
+                    subtitle: 'AI workshop website',
+                    category: 'Workshop Site',
+                    badge: 'WORKSHOP SITE',
+                    techLabel: 'Web Project',
+                    overview: 'A website presenting an AI workshop, its learning opportunities and programme information.',
+                    url: 'https://ai-workshop-website-y3t3.bolt.host/',
+                    tags: ['Web Project']
+                }
+            ];
+
+            // Stylised project card (project name, host and stack only; not a screenshot)
+            function buildPreview(p) {
+                let host = '';
+                try { host = new URL(p.url).hostname; } catch (err) { host = ''; }
+                const chips = p.tags.map(t => `<span class="bg-ivory/10 px-2 py-1 rounded">${t}</span>`).join('');
+                return `
+                    <div class="w-full h-full bg-ink p-4 flex flex-col justify-between relative overflow-hidden">
+                        <div class="flex justify-between items-center font-mono text-[10px] text-ivory/70 z-10">
+                            <span>WEB PROJECT</span>
+                            <span class="px-2 py-0.5 bg-burnt text-ink font-bold rounded">${p.badge}</span>
+                        </div>
+                        <svg class="absolute inset-0 w-full h-full opacity-60" viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true">
+                            <path d="M 0 70 C 70 30, 120 95, 190 50 C 235 22, 265 70, 300 40" fill="none" stroke="#C84B31" stroke-width="2"/>
+                            <path d="M 0 85 C 90 90, 140 40, 215 75 C 250 90, 275 55, 300 62" fill="none" stroke="#FAF5EE" stroke-width="1" stroke-dasharray="4 4"/>
+                        </svg>
+                        <div class="z-10">
+                            <div class="font-display font-bold text-xl sm:text-2xl text-ivory leading-tight">${p.title}</div>
+                            <div class="font-mono text-[10px] text-ivory/60 mt-1 break-all">${host}</div>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5 font-mono text-[9px] text-ivory/80 z-10">${chips}</div>
+                    </div>`;
+            }
+
+            // Category Filter Logic
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const projectRows = document.querySelectorAll('.project-row');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const filter = btn.getAttribute('data-filter');
+
+                    filterBtns.forEach(b => {
+                        b.className = 'filter-btn px-4 py-2 rounded-full bg-transparent text-ink border border-ink/25 hover:border-ink uppercase tracking-wider transition-all';
+                        b.setAttribute('aria-pressed', 'false');
+                    });
+                    btn.className = 'filter-btn active-filter px-4 py-2 rounded-full bg-ink text-ivory border border-ink uppercase tracking-wider transition-all';
+                    btn.setAttribute('aria-pressed', 'true');
+
+                    projectRows.forEach(row => {
+                        const category = row.getAttribute('data-category');
+                        row.style.display = (filter === 'all' || category === filter) ? 'block' : 'none';
+                    });
+                });
+            });
+
+            // Hover Floating Preview & Click Modal Logic
+            const modal = document.getElementById('case-study-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const visitBtn = document.getElementById('modal-visit-btn');
+            const linkText = document.getElementById('modal-link-text');
+            let lastFocused = null;
+
+            function openProjectModal(id) {
+                const data = projectData[id];
+                if (!data || !modal) return;
+
+                lastFocused = document.activeElement;
+
+                document.getElementById('modal-index').textContent = data.index;
+                document.getElementById('modal-title').textContent = data.title;
+                document.getElementById('modal-subtitle').textContent = data.subtitle;
+                document.getElementById('modal-metric-1').textContent = data.category;
+                document.getElementById('modal-metric-2').textContent = data.techLabel;
+                document.getElementById('modal-metric-3').textContent = 'Web Development';
+                document.getElementById('modal-overview').textContent = data.overview;
+                document.getElementById('modal-visual-banner').innerHTML = buildPreview(data);
+
+                linkText.textContent = data.url;
+                linkText.href = data.url;
+                visitBtn.href = data.url;
+
+                const tagsContainer = document.getElementById('modal-tags');
+                tagsContainer.innerHTML = data.tags.map(t => `<span class="px-3 py-1 rounded-full bg-ink/10 border border-ink/20">${t}</span>`).join('');
+
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.classList.add('modal-open');
+                if (closeModalBtn) closeModalBtn.focus();
+            }
+
+            function closeProjectModal() {
+                if (!modal || modal.classList.contains('hidden')) return;
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.classList.remove('modal-open');
+                if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+            }
+
+            projectRows.forEach(row => {
+                const id = parseInt(row.getAttribute('data-project-id'), 10);
+
+                row.addEventListener('mouseenter', () => {
+                    if (previewSlot && projectData[id]) {
+                        previewSlot.innerHTML = buildPreview(projectData[id]);
+                    }
+                    if (previewFollower) {
+                        previewFollower.classList.add('is-active');
+                    }
+                });
+
+                row.addEventListener('mouseleave', () => {
+                    if (previewFollower) {
+                        previewFollower.classList.remove('is-active');
+                    }
+                });
+
+                row.addEventListener('click', () => {
+                    if (previewFollower) previewFollower.classList.remove('is-active');
+                    openProjectModal(id);
+                });
+
+                row.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openProjectModal(id);
+                    }
+                });
+            });
+
+            if (closeModalBtn) closeModalBtn.addEventListener('click', closeProjectModal);
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeProjectModal();
+
+                // Keep keyboard focus inside the open dialog
+                if (e.key === 'Tab' && modal && !modal.classList.contains('hidden')) {
+                    const focusable = modal.querySelectorAll('a[href], button');
+                    if (!focusable.length) return;
+                    const first = focusable[0];
+                    const last = focusable[focusable.length - 1];
+                    if (e.shiftKey && document.activeElement === first) {
+                        e.preventDefault();
+                        last.focus();
+                    } else if (!e.shiftKey && document.activeElement === last) {
+                        e.preventDefault();
+                        first.focus();
+                    }
+                }
+            });
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) closeProjectModal();
+                });
+            }
+
+            /* --------------------------------------------------
+             * 7. BENTO GRID INTERACTIONS
+             * -------------------------------------------------- */
+            // A) Frontend skill pill cloud
+            const techDetails = {
+                html: {
+                    title: 'MODULE: HTML5',
+                    exp: 'USED IN: ALL WEB PROJECTS',
+                    desc: 'Page structure and content markup for the websites I build.'
+                },
+                css: {
+                    title: 'MODULE: CSS3',
+                    exp: 'FOCUS: LAYOUT & STYLING',
+                    desc: 'Styling, layout and responsive behaviour that adapts a site cleanly across screen sizes.'
+                },
+                js: {
+                    title: 'MODULE: JAVASCRIPT',
+                    exp: 'FOCUS: INTERACTIVITY',
+                    desc: 'Client-side behaviour and interactivity, also used alongside Node.js on the ARCHIVIZ Academy platform.'
+                },
+                responsive: {
+                    title: 'MODULE: RESPONSIVE WEB DESIGN',
+                    exp: 'FOCUS: ALL SCREEN SIZES',
+                    desc: 'Layouts designed to work on phones, tablets and desktop screens.'
+                },
+                uiux: {
+                    title: 'MODULE: UI/UX FUNDAMENTALS',
+                    exp: 'FOCUS: CLARITY & USABILITY',
+                    desc: 'Clear navigation, readable layouts and a logical flow for visitors.'
+                },
+                deploy: {
+                    title: 'MODULE: WEBSITE DEPLOYMENT',
+                    exp: 'PROJECTS HOSTED ONLINE',
+                    desc: 'Publishing finished websites to live hosting so they can be visited online.'
+                }
+            };
+
+            const techPills = document.querySelectorAll('.tech-pill');
+            techPills.forEach(pill => {
+                pill.addEventListener('click', () => {
+                    const key = pill.getAttribute('data-tech');
+                    const info = techDetails[key];
+                    if (!info) return;
+
+                    techPills.forEach(p => {
+                        p.className = 'tech-pill px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider bg-ink/15 text-ink border border-ink/30 hover:border-ivory transition-all';
+                    });
+                    pill.className = 'tech-pill px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider bg-ivory text-ink border border-ink font-semibold transition-all';
+
+                    document.getElementById('tech-readout-title').textContent = info.title;
+                    document.getElementById('tech-readout-exp').textContent = info.exp;
+                    document.getElementById('tech-readout-desc').textContent = info.desc;
+                });
+            });
+
+            // B) Illustrative sign-up flow replay (ARCHIVIZ Academy)
+            const replayBtn = document.getElementById('replay-flow-btn');
+            const flowLogs = document.getElementById('flow-logs');
+            const flowSteps = [
+                ['STEP 01', 'student signs up with email'],
+                ['STEP 02', 'account waits for admin approval'],
+                ['STEP 03', 'admin approves the student'],
+                ['STEP 04', 'student accesses the course modules']
+            ];
+            let flowTimer = null;
+
+            if (replayBtn && flowLogs) {
+                replayBtn.addEventListener('click', () => {
+                    clearInterval(flowTimer);
+                    flowLogs.innerHTML = '';
+                    let i = 0;
+                    function addStep() {
+                        if (i >= flowSteps.length) {
+                            clearInterval(flowTimer);
+                            return;
+                        }
+                        const line = document.createElement('div');
+                        line.className = 'text-ivory/90';
+                        const tag = document.createElement('span');
+                        tag.className = 'text-burnt';
+                        tag.textContent = flowSteps[i][0];
+                        line.appendChild(tag);
+                        line.appendChild(document.createTextNode(' ' + flowSteps[i][1]));
+                        flowLogs.appendChild(line);
+                        i++;
+                    }
+                    addStep();
+                    flowTimer = setInterval(addStep, 650);
+                });
+            }
+
+            // D) Wireframe / finished UI draggable comparison slider
+            const compWidget = document.getElementById('comparison-widget');
+            const wireOverlay = document.getElementById('wireframe-overlay');
+            const compHandle = document.getElementById('comparison-handle');
+            let isDraggingSlider = false;
+            let sliderPercent = 50;
+
+            function setComparison(percent) {
+                if (!compWidget || !wireOverlay || !compHandle) return;
+                sliderPercent = Math.max(5, Math.min(95, percent));
+                wireOverlay.style.clipPath = `inset(0 ${100 - sliderPercent}% 0 0)`;
+                compHandle.style.left = `${sliderPercent}%`;
+                compWidget.setAttribute('aria-valuenow', String(Math.round(sliderPercent)));
+            }
+
+            function updateComparisonSlider(clientX) {
+                const rect = compWidget.getBoundingClientRect();
+                setComparison(((clientX - rect.left) / rect.width) * 100);
+            }
+
+            if (compWidget) {
+                compWidget.addEventListener('mousedown', (e) => {
+                    isDraggingSlider = true;
+                    updateComparisonSlider(e.clientX);
+                });
+                window.addEventListener('mouseup', () => {
+                    isDraggingSlider = false;
+                });
+                window.addEventListener('mousemove', (e) => {
+                    if (isDraggingSlider) updateComparisonSlider(e.clientX);
+                });
+
+                // Touch support for mobile & tablet
+                compWidget.addEventListener('touchstart', (e) => {
+                    if (e.touches[0]) updateComparisonSlider(e.touches[0].clientX);
+                }, { passive: true });
+                compWidget.addEventListener('touchmove', (e) => {
+                    if (e.touches[0]) updateComparisonSlider(e.touches[0].clientX);
+                }, { passive: true });
+
+                // Keyboard support
+                compWidget.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') { e.preventDefault(); setComparison(sliderPercent - 5); }
+                    if (e.key === 'ArrowRight') { e.preventDefault(); setComparison(sliderPercent + 5); }
+                });
+            }
+
+            /* --------------------------------------------------
+             * 8. SCROLL OBSERVERS (REVEALS, PROCESS CARDS)
+             * -------------------------------------------------- */
+            // Reveal Headline Lines on Load
+            setTimeout(() => {
+                document.querySelectorAll('.reveal-line').forEach(el => {
+                    el.classList.add('is-visible');
+                });
+            }, 120);
+
+            // Process Cards Scroll Illumination Observer
+            const processCards = document.querySelectorAll('.process-card');
+            if (processCards.length > 0 && 'IntersectionObserver' in window) {
+                const processObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            processCards.forEach(c => c.classList.remove('active-process'));
+                            entry.target.classList.add('active-process');
+                        }
+                    });
+                }, { threshold: 0.55 });
+
+                processCards.forEach(card => processObserver.observe(card));
+            }
+
+            /* --------------------------------------------------
+             * 9. COPY PHONE NUMBER & TOAST NOTIFICATION
+             * -------------------------------------------------- */
+            const copyPhoneBtn = document.getElementById('copy-phone-btn');
+            const toast = document.getElementById('toast-notification');
+            const toastMsg = document.getElementById('toast-message');
+            const PHONE_DISPLAY = '+91 9092656069';
+            let toastTimer = null;
+
+            function showToast(message) {
+                if (!toast || !toastMsg) return;
+                toastMsg.textContent = message;
+                toast.classList.remove('opacity-0', 'translate-y-4');
+                toast.classList.add('opacity-100', 'translate-y-0');
+
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => {
+                    toast.classList.add('opacity-0', 'translate-y-4');
+                    toast.classList.remove('opacity-100', 'translate-y-0');
+                }, 3200);
+            }
+
+            function legacyCopy(text) {
+                const tempInput = document.createElement('textarea');
+                tempInput.value = text;
+                tempInput.setAttribute('readonly', '');
+                tempInput.style.position = 'fixed';
+                tempInput.style.opacity = '0';
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                let ok = false;
+                try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+                document.body.removeChild(tempInput);
+                return ok;
+            }
+
+            function copyPhoneToClipboard() {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(PHONE_DISPLAY).then(
+                        () => showToast(`Copied ${PHONE_DISPLAY}`),
+                        () => showToast(legacyCopy(PHONE_DISPLAY) ? `Copied ${PHONE_DISPLAY}` : 'Copy failed — please copy manually')
+                    );
+                } else {
+                    showToast(legacyCopy(PHONE_DISPLAY) ? `Copied ${PHONE_DISPLAY}` : 'Copy failed — please copy manually');
+                }
+            }
+
+            if (copyPhoneBtn) copyPhoneBtn.addEventListener('click', copyPhoneToClipboard);
+
+        })();
+    </script>
+</body>
+</html>
